@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+<html>
+<head>
+<title>Simple MPC</title>
+<style></style>
+</head>
+<body>
+<span onclick="fnPause();">[Play/Pause]</span>
+<span onclick="fnSkip();">[Skip]</span>
+<span onclick="fnRepop();">[Update]</span>
+<table id="myTrackList">
+</table>
+<script>
+var myPlaylistId=0;
+var mySongId=0;
+
+function fnPlayId(sTrk) {
+  fetch("cgi-bin/mpdplayId?"+sTrk);
+  fnRepop();
+}
+
+function fnPause() {
+  fetch("cgi-bin/mpdpause.sh");
+  fnRepop();
+}
+
+function fnSkip() {
+  fetch("cgi-bin/mpdnext.sh");
+  fnRepop();
+}
+
+//Read the JSON object, clear the table then and add rows.
+function fnAddTrackRows(myMPDplaylistinfo) {
+  var table=document.getElementById("myTrackList")
+  table.innerHTML = ""; //brutal, is there a problem with this?
+  for (let myTrack of myMPDplaylistinfo.playlist) {
+    var row=table.insertRow(-1);  //Row at end of table
+    var cell1=row.insertCell(0);
+    cell1.style.textAlign = "right";
+    row.id=myTrack.Id;
+    var cell2=row.insertCell(1);
+    //Add click listener, using the MPD's own Track Id
+    row.setAttribute("onclick", "fnPlayId("+myTrack.Id+");");
+    if (myTrack.Id==mySongId) {
+      cell2.style.fontWeight="bold";
+    }
+    //Use either track number, if given, usually in a track on an album, or position in array.
+    //usually streams have no track or title
+    if ("Track" in myTrack) {
+      cell1.innerHTML=myTrack.Track;
+    }
+    else {
+      cell1.innerHTML=myTrack.Pos;
+    }
+    if ("Title" in myTrack) { 
+      cell2.innerHTML=myTrack.Title;
+    }
+    else {
+      cell2.innerHTML=myTrack.file;
+    }
+  }
+}
+
+function fnPopulateTracks() {
+  fetch("/cgi-bin/mpdplaylistinfo.sh")
+    .then((myPlaylistinfo) => {
+      if (!myPlaylistinfo.ok) {
+        throw new Error("HTTP error, status = ${myPlaylistinfo.status}");
+      }
+      return myPlaylistinfo.json();
+    })
+    .then((trkdata) => {fnAddTrackRows(trkdata)})
+}
+
+//Repopulate if the playlist number has changed, otherwise don't
+//playlist is a sequential number mpd assigns if the playlist changes.
+function fnRepop() {
+  fetch("/cgi-bin/mpdstatusjson.sh")
+    .then((response) => {
+	if (!response.ok) {
+	  throw new Error("HTTP error, status = ${response.status}");
+	}
+	return response.json();
+      })
+      .then((data) => {
+         mySongId=data.songid;
+	 if (myPlaylistId != data.playlist) {
+	   myPlaylistId=data.playlist;
+	   fnPopulateTracks();
+	 }
+         let myTable=document.getElementById("myTrackList");
+       for (let myRow of myTable.rows) {
+         let x=myRow.cells;
+         x[1].style.fontWeight="normal";
+         if (myRow.id == data.songid) {
+           x[1].style.fontWeight="bold";
+         }
+       }
+      })
+  }
+
+fnRepop();
+
+</script>
+</body>
+</html>

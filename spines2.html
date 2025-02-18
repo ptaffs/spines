@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<html>
+<head>
+<title>Spines!</title>
+<style>
+body {
+  margin:0
+  height: 100%;
+  overflow-y: hidden;
+}
+#container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+}
+
+#controls {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 3rem;
+  background-color:#009900;
+  text-align:left;
+  vertical-align:top;
+}
+
+#placehere {
+  position: absolute;
+  top: 3rem;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background-color:#990000;
+  text-align:left;
+  color:#FFFFFF;
+}
+
+#coverview {
+  position: absolute;
+  top: 4rem;
+  left:4rem;
+}
+
+#cover {
+  border: 1px green solid;
+}
+
+#flip {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+}
+
+</style>
+</head>
+<body>
+<div id="container">
+<div id="controls">
+<img src="images/pause-button-red-icon.svg" style="width: 2rem; width: 2rem;" onclick="fnPause();">
+<span id="status">00:00/00:00</span>
+<img id="topspine" src="images/spinefv-min.svg" style="height: 2rem;" onclick="fnShowCover();">
+</div>
+<div id="placehere">
+</div>
+</div>
+<div id="coverview" hidden>
+  <img id="cover" alt="blank"/>
+  <span id="flip" onclick="fnFlip();"><img style="height: 2rem;"  src="images/flip.svg"/></span>
+</div>
+</body>
+<script>
+
+function addSpines(albumjson) {
+
+//https://stackoverflow.com/questions/28226660/fit-n-rectangles-within-area-keeping-aspect-ratio
+  var areaHeight = document.getElementById("placehere").offsetHeight;   //set here your area height
+  var areaWidth = document.getElementById("placehere").offsetWidth;     //set here your area width
+  var N = albumjson.albums.length;                           //set amount of rectangles you want to fit
+  var rectRatio = 65/1180;                   //set rectangle ratio
+  var gutter = [0, 4];                  //set x and y spacing between rectangles
+  var cols, rows, rectHeight, rectWidth; //variables that we need to calculate
+  
+  function rowIterator(iterator) {
+     rows = iterator;
+     cols = Math.ceil(N/rows);  
+
+     rectHeight = (areaHeight - (rows-1)*gutter[1])/rows;          
+     rectWidth = rectHeight*rectRatio;
+
+     if (cols * rectWidth + (cols - 1)*gutter[0] > areaWidth) {
+	 rowIterator(rows + 1);
+     }
+  }
+
+  rowIterator(1);                       //feed initial value
+  var size1 = [rectWidth, rectHeight];
+
+  function colIterator(iterator) {
+     cols = iterator;
+     rows = Math.ceil(N/cols);
+
+     rectWidth = (areaWidth - (cols - 1)*gutter[0])/cols;
+     rectHeight = rectWidth/rectRatio;
+
+     if (rows * rectHeight + (rows - 1)*gutter[1] > areaHeight) {
+	 colIterator(cols + 1);
+     }
+  }
+  colIterator(1);
+  var size2 = [rectWidth, rectHeight];
+   
+  optimalRectSize = [Math.max(size1[0], size2[0]), Math.max(size1[1], size2[1])]
+
+  for (var album of albumjson.albums) {
+    let elem = document.createElement("img");
+    elem.setAttribute("src", "/cgi-bin/getspine.sh?"+album.id);
+    elem.setAttribute("height", optimalRectSize[1]);
+    elem.setAttribute("width", optimalRectSize[0]);
+    elem.setAttribute("onclick", "fnPlay("+album.id+");");
+    elem.setAttribute("title", (( album.artist == "" ) ? "" : album.artist+" - ")+album.album );
+
+    document.getElementById("placehere").appendChild(elem);
+  }
+}
+
+function fnPause() {
+  fetch("cgi-bin/mpdpause.sh");
+}
+ 
+function fnHideCover() {
+  document.getElementById("coverview").hidden=true;
+}
+
+function fnFlip() {
+  let elem=document.getElementById("cover");
+  let sSrc=elem.src;
+  const sURL=sSrc.split("?");
+  let sBoF="getback.sh"
+  if (sURL[0].includes(sBoF)) {
+    sBoF="getfront.sh"
+  }
+  elem.src="/cgi-bin/"+sBoF+"?"+sURL[1];
+}
+
+function fnShowCover() {
+  let elem=document.getElementById("cover");
+  if (arguments.length==1) {
+    elem.setAttribute("src","/cgi-bin/getback.sh?" + arguments[0]);
+  } else
+  {
+    fetch("/cgi-bin/currentalbum.sh") //<!-- fetch provides a response -->
+      .then(response => response.text()) //<!-- response.text provides text -->
+      .then(text => elem.setAttribute("src","/cgi-bin/getback.sh?"+text));
+//      <!-- not using the album number messes up the browser image cache, ie just having getCurrentAlbumCover wouldn't work as a cache is used -->
+  } 
+  elem.setAttribute("height",document.getElementById("topspine").width);
+//<!-- I thought i'd have to adjust the height proportionally, but in FF it just does -->  
+  elem.setAttribute("onclick","fnHideCover();");
+  document.getElementById("coverview").hidden=false;
+}
+
+function fnPlay(sId) {
+  document.getElementById("topspine").src="/cgi-bin/getspine90.sh?"+sId;
+  fnShowCover(sId);
+  fetch("cgi-bin/playentry.sh?"+sId);
+}
+
+function updateStatus()
+{
+fetch("/cgi-bin/mpdstatusjson.sh")
+  .then((response) => {
+    if (!response.ok) {
+      throw new Error(`HTTP error, status = ${response.status}`);
+    }
+//<!--    setTimeout(updateStatus, 1000) -->
+    return response.json();
+  })
+  .then((data) => {
+     if (isNaN(data.elapsed))
+     {
+       document.getElementById("status").innerHTML = "idle"
+     }
+     else
+     {
+       const elapsedWholeMinutes=Math.floor(data.elapsed/60);
+       const elapsedWholeSeconds=Math.floor(data.elapsed-elapsedWholeMinutes*60);
+       const durationWholeMinutes=Math.floor(data.duration/60);
+       const durationWholeSeconds=Math.floor(data.duration-durationWholeMinutes*60);
+       document.getElementById("status").innerHTML = elapsedWholeMinutes +":"+String(elapsedWholeSeconds).padStart(2,"0")+
+           " "+durationWholeMinutes+":"+String(durationWholeSeconds).padStart(2,"0");
+     }
+  })
+}
+
+updateStatus();
+
+fetch("cgi-bin/getalbumsjson3.sh")
+  .then((response) => {
+    if (!response.ok) {
+      throw new Error(`HTTP error, status = ${response.status}`);
+    }
+    return response.json();
+  })
+  .then((data) => {addSpines(data)})
+
+</script>
+</html>
