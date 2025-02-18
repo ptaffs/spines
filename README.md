@@ -46,3 +46,25 @@ Pet Shop Boys 1994 Disco 2$ head album.m3u
 #EXTINF:179, Pet Shop Boys - I Wouldn't Normally Do This Kind of Thing" (DJ Pierre Wild Pitch mix)
 03 I Wouldn't Normally Do This Kind of Thing_ (DJ Pierre Wild Pitch mix).mp3
 </code>
+
+The database, created and maintained by indexer5.sh will look like this:
+<code>
+tail /var/local/spines/spinesdb.txt
+1586|Albums/Air/Air 2001 10,000hz Legend/album.m3u|1733280510|album|Air|2001|10 000 Hz Legend|
+1587|Albums/Air/Air 2004 Talkie Walkie/album.m3u|1733280511|album|Air|2004|Talkie Walkie|
+1292|Compilations/Ministry of Sound/The Annual Millennium Edition/compilation.cue|1725040042|compilation|Judge Jules & Tall Paul|1999|Ministry of Sound: The Annual - Millennium Edition|
+1293|Compilations/Ministry of Sound/The Annual/compilation.cue|1725040627|compilation|Boy George And Pete Tong|1995|Ministry of Sound: The Annual|
+1294|Compilations/Ministry of Sound/The Chillout Session/compilation.cue|1725040105|compilation|Ministry Of Sound|2001|Ministry of Sound: The Chillout Session|
+1295|Compilations/Ministry of Sound/The Ibiza Annual 1998/compilation.cue|1725040154|compilation|Judge Jules + Boy George|1998|Ministry of Sound: The Ibiza Annual|
+1296|Compilations/Ministry of Sound/The Ibiza Annual Summer 2000/compilation.cue|1725040228|compilation|Judge Jules And Tall Paul|2000|Ministry of Sound: The Ibiza Annual - Summer 2000|
+1297|Compilations/Queer As Folk 2/compilation.m3u|1725041169|compilation|Various Artists|2000|Queer as Folk 2: Same Men New Tracks|
+1298|Compilations/Queer As Folk/compilation.m3u|1725041588|compilation|Various Artists|1999|Queer as Folk 1: The Whole Love Thing. Sorted.|
+1300|Compilations/1990 Red Hot and Blue/compilation.m3u|1725301680|compilation|Various Artists|1990|Red Hot and Blue|
+1299|OST/Juno/soundtrack.m3u|1724011391|soundtrack|Barry Louis Polisar|2007|Juno|
+1516|OST/Vangelis - Blade Runner (1994)(flac)/soundtrack.m3u|1728928781|soundtrack|Vangelis|1994|Blade Runner|
+</code>
+
+Pipe separated columns are index (assigned by the indexing script), path to playlist, date playlist file was read to identify whether to re-read if updated, type, artist, release date (year) and title.
+
+playlists can be named by type inorder that the GUI presents studio albums, classical, compilation then soundtrack:
+<ul><li>album.m3u or album.cue for traditional studio albums</li><li>sountrack.m3u or soundtrack.cue for movie sountrack albums</li><li>compilation or classical for those album types.</li></ul>
