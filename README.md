@@ -16,7 +16,7 @@ sMusic=/mnt/usb/Music/
 sWidth=50
 sDev="hw:CARD=UA1A,DEV=0"</code>
 
-Albums are created by having a correctly named playlist and optionally, but importantly a spine.jpg, back.jpg and cover.jpg. The album can be flac/cue or m3u playlists.
+Albums are created by having a correctly named playlist and optionally, but importantly a spine.jpg, back.jpg and cover.jpg. The album can be flac/cue or m3u playlists, these playlist files are played by mpd with the "load".
 
 Additional data in the playlist/cue assist presentation "REM DATE" in cue
 <code>
