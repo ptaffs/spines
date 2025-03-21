@@ -17,7 +17,7 @@ sMax=0
 [[ -r "${sDB}" ]] && sMax=$(cut -f1 -d\| ${sDB}|sort -n|tail -1)
 
 #tr -d $'\r'
-find "${sMusic}" \( -name "album.m3u" -o -name "album.flag" -o -name "album.cue" -o -name "compilation.m3u" -o -name "compilation.cue" -o -name "classical.m3u" -o -name "classical.cue" -o -name "soundtrack.m3u" \) |
+find "${sMusic}" \( -name "album.m3u" -o -name "album.cue" -o -name "compilation.m3u" -o -name "compilation.cue" -o -name "classical.m3u" -o -name "classical.cue" -o -name "soundtrack.m3u" \) |
 while read sFile
 do
   sFileMod=$(stat -c "%Y" "${sFile}")
@@ -35,6 +35,7 @@ do
       sArt=${sArt#*:}
       sAlb=$(grep "#EXTALB:" < "${sFileUx}")
       sAlb=${sAlb#*:}
+      #this code pulls date as EXTYER:1981 or appended to EXTALB:MyAlbum (1981)
       sYr=$(grep "#EXTYER:" < "${sFileUx}")
       sYr="${sYr#*:}"
       if [[ "${sAlb: -1}" == ")" ]]
