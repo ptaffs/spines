@@ -13,7 +13,9 @@ sDB=/var/local/spines/spinesdb.txt
 IFS=\| read sId sPath sDate sReleaseType sArtist sYear sAlbum <<< $(grep -e "^${sNumber}|" "${sDB}")
 sPathx="${sMusic%/}/${sPath}"
 
-sCmd="command_list_begin\nclear\n"
+#sCmd="command_list_begin\nclear\n"
+sCmd="command_list_begin\nclear\nrandom 0\n"
+
 if [[ "${sPathx##*.}" == "m3u" ]] || [[ "${sPathx##*.}" == "cue" ]]
 then
   sCmd="${sCmd}load \"file:///${sPathx}\"\n"
