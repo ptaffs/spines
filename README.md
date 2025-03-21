@@ -20,6 +20,8 @@ sDev="hw:CARD=UA1A,DEV=0"</code>
 
 Albums are created by having a correctly named playlist and optionally, but importantly a spine.jpg, back.jpg and cover.jpg. The album can be flac/cue or m3u playlists, these playlist files are played by mpd with the "load".
 
+![Screenshot showing mp3 files and the additional files needed for Spines; back, cover, spine and album.m3u](https://raw.githubusercontent.com/ptaffs/spines/refs/heads/main/idealfolder.png)
+
 Additional data in the playlist/cue assist presentation "REM DATE" in cue
 <code>
 Pet Shop Boys 1986 03 Please$ head album.cue 
