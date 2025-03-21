@@ -4,10 +4,12 @@ This has been tested on Apache2 and music player daemon (musicpd).
   <li>Shell scripts go in /cgi-bin/</li>
   <li>Images go in html /images/</li>
   <li>html goes in html</li>
-  <li>spines2.html is the main file</li>
+  <li>spines.html is the main index file</li>
 </ul>
 
-spines2.html is the main file
+spines.html is the main file
+
+![Screenshot showing rows of record spines and HTML float text that Avril Lavigne is under the mouse pointer](https://github.com/ptaffs/spines/blob/main/screenshot.jpeg?raw=true)
 
 /etc/spines.conf<br>
 <code>sDB=/var/local/spines/spinesdb.txt
