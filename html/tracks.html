@@ -18,17 +18,17 @@ var myPlaylistId=0;
 var mySongId=0;
 
 function fnPlayId(sTrk) {
-  fetch("cgi-bin/mpdplayId?"+sTrk);
+  fetch("/cgi-bin/mpdplayId?"+sTrk);
   fnRepop();
 }
 
 function fnPause() {
-  fetch("cgi-bin/mpdpause.sh");
+  fetch("/cgi-bin/mpdpause.sh");
   fnRepop();
 }
 
 function fnSkip() {
-  fetch("cgi-bin/mpdnext.sh");
+  fetch("/cgi-bin/mpdnext.sh");
   fnRepop();
 }
 
