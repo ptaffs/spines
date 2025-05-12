@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black">
 <html>
 <head>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
 <title>Spines!</title>
 <style>
 body {
@@ -62,7 +62,7 @@ body {
 <div id="container">
 <div id="controls">
 <img src="images/pause-button-red-icon.svg" style="width: 2rem; width: 2rem;" onclick="fnPause();">
-<span id="status">00:00/00:00</span>
+<span id="status" hidden>00:00/00:00</span>
 <img id="topspine" src="images/spinefv-min.svg" style="height: 2rem;" onclick="fnShowCover();">
 </div>
 <div id="placehere">
@@ -72,7 +72,6 @@ body {
   <img id="cover" alt="blank"/>
   <span id="flip" onclick="fnFlip();"><img style="height: 2rem;"  src="images/flip.svg"/></span>
 </div>
-</body>
 <script>
 
 function addSpines(albumjson) {
@@ -197,7 +196,7 @@ fetch("/cgi-bin/mpdstatusjson.sh")
   })
 }
 
-updateStatus();
+//updateStatus();
 
 fetch("cgi-bin/getalbumsjson3.sh")
   .then((response) => {
@@ -209,4 +208,5 @@ fetch("cgi-bin/getalbumsjson3.sh")
   .then((data) => {addSpines(data)})
 
 </script>
+</body>
 </html>
