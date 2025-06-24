@@ -59,8 +59,8 @@ do
       sYr=$(echo "${sYr##* }" | tr -d "\"")
     fi
     rm $sFileUx
-    [[ -z "${sArt}" ]] && echo "Warning no artist for ${sFile}"
-    [[ -z "${sYr}" ]] && sYr=0000
+    [[ -z "${sArt}" ]] && echo "Warning: no artist for ${sFile}"
+    [[ -z "${sYr}" ]] && { sYr=0000 ; echo "Warning: no year for ${sFile}" ; }
     [[ -z "${sAlb}" ]] && sAlb="${sFile##*/}" 
     echo "$((++sMax))|${sFile#${sMusic}}|${sFileMod}|${sType}|${sArt}|${sYr}|${sAlb}|" >> "${sDB}.$$"
   fi
@@ -68,10 +68,11 @@ done
 echo "Finished index update"
 mv "${sDB}.$$" "${sDB}"
 
-echo "Lint report"
-find "${sMusic}" -name "album.m3u"|
-while read sM3U
+echo "M3U Lint report"
+cut -f2 -d\| "${sDB}" | grep ".m3u" |
+while read sDBM3U
 do
+  sM3U="${sMusic}/${sDBM3U}"
   #sYer=$(grep "#EXTYER:" < "${sM3U}" |cut -f2 -d:)
   grep -q "#EXTART:" < "${sM3U}" || echo "${sM3U} Missing Artist"
   grep -q "#EXTALB:" < "${sM3U}" || echo "${sM3U} Missing Album"
@@ -79,7 +80,7 @@ do
   grep -v "^#" "${sM3U}"|
   while read sFile
   do
-    if [[ -r "${sM3U%album.m3u}${sFile}" ]]
+    if [[ -r "${sM3U%/*}/${sFile}" ]]
     then
 #      echo "${sM3U} ${sFile} Good"
       :
