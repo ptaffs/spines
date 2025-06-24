@@ -147,24 +147,28 @@ function fnFlip() {
 }
 
 function fnShowCover() {
-  let elem=document.getElementById("cover");
+  let coverElem=document.getElementById("cover");
+  let spineElem=document.getElementById("topspine");
   if (arguments.length==1) {
-    elem.setAttribute("src","/cgi-bin/getback.sh?" + arguments[0]);
+    sId=arguments[0];
   } else
   {
     fetch("/cgi-bin/currentalbum.sh") //<!-- fetch provides a response -->
       .then(response => response.text()) //<!-- response.text provides text -->
-      .then(text => elem.setAttribute("src","/cgi-bin/getback.sh?"+text));
-//      <!-- not using the album number messes up the browser image cache, ie just having getCurrentAlbumCover wouldn't work as a cache is used -->
+      .then(text => sId=text);
   } 
-  elem.setAttribute("height",document.getElementById("topspine").width);
+  if (sId=>1){
+  spineElem.setAttribute("src","/cgi-bin/getspine90.sh?"+sId);
+  coverElem.setAttribute("src","/cgi-bin/getback.sh?"+sId);
+  coverElem.setAttribute("height",spineElem.width);
 //<!-- I thought i'd have to adjust the height proportionally, but in FF it just does -->  
-  elem.setAttribute("onclick","fnHideCover();");
+  coverElem.setAttribute("onclick","fnHideCover();");
   document.getElementById("coverview").hidden=false;
+  }
 }
 
 function fnPlay(sId) {
-  document.getElementById("topspine").src="/cgi-bin/getspine90.sh?"+sId;
+//<!--  document.getElementById("topspine").src="/cgi-bin/getspine90.sh?"+sId; -->
   fnShowCover(sId);
   fetch("cgi-bin/playentry.sh?"+sId);
 }
