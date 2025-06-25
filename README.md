@@ -4,7 +4,8 @@ This has been tested on Apache2 and music player daemon (musicpd).
   <li>Shell scripts go in /cgi-bin/</li>
   <li>Images go in html /images/</li>
   <li>html goes in html</li>
-  <li>spines.html is the main index file</li>
+  <li>spines.html is the main application/index file</li>
+  <li>a database in /var/local/spines/ and a collection of music and images are needed in the music folder, as configured in /etc/spines.conf
 </ul>
 
 spines.html is the main file, includes JavaScript and CSS.
