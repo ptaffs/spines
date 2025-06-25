@@ -7,7 +7,7 @@ This has been tested on Apache2 and music player daemon (musicpd).
   <li>spines.html is the main index file</li>
 </ul>
 
-spines.html is the main file
+spines.html is the main file, includes JavaScript and CSS.
 
 ![Screenshot showing rows of record spines and HTML float text that Avril Lavigne is under the mouse pointer](https://github.com/ptaffs/spines/blob/main/screenshot.jpeg?raw=true)
 
