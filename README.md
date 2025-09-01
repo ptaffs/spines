@@ -73,3 +73,6 @@ Pipe separated columns are index (assigned by the indexing script), path to play
 
 playlists can be named by type inorder that the GUI presents studio albums, classical, compilation then soundtrack:
 <ul><li>album.m3u or album.cue for traditional studio albums</li><li>sountrack.m3u or soundtrack.cue for movie sountrack albums</li><li>compilation or classical for those album types.</li></ul>
+
+
+![Screen recording showing Spines! load](https://github.com/ptaffs/spines/raw/refs/heads/main/Screen%20Recording%202025-09-01%20at%2014.50.33.mp4)
