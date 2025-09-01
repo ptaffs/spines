@@ -75,10 +75,7 @@ playlists can be named by type inorder that the GUI presents studio albums, clas
 <ul><li>album.m3u or album.cue for traditional studio albums</li><li>sountrack.m3u or soundtrack.cue for movie sountrack albums</li><li>compilation or classical for those album types.</li></ul>
 
 
-Screen recording showing Spines! load
-
-https://github.com/ptaffs/spines/raw/refs/heads/main/Screen%20Recording%202025-09-01%20at%2014.50.33.mp4
-
+Screen recording showing Spines! load:
 
 https://github.com/user-attachments/assets/5d9706c8-a6ea-432b-9bb0-4b03ef1097ca
 
