@@ -74,8 +74,20 @@ Pipe separated columns are index (assigned by the indexing script), path to play
 playlists can be named by type inorder that the GUI presents studio albums, classical, compilation then soundtrack:
 <ul><li>album.m3u or album.cue for traditional studio albums</li><li>sountrack.m3u or soundtrack.cue for movie sountrack albums</li><li>compilation or classical for those album types.</li></ul>
 
-
 Screen recording showing Spines! load:
 
 https://github.com/user-attachments/assets/5d9706c8-a6ea-432b-9bb0-4b03ef1097ca
 
+I Still Haven't Found What I’m Looking For
+
+Our large digital libraries have failed to recreate the same inspiring browsing experience as their physical counterparts. Walk into a small bookshop, or an apartment with shelves of records, or leaf through family photo albums, and you’ll be compelled to look—recognizing some items and becoming nostalgic or curious about others. The magic of looking vanishes on your e-reader, music app, or whatever you use for photos. Most of these solutions fall back on cover-artwork thumbnails of the most recently added or alphabetically first (Aaron Neville, ABBA, Air) twelve of two hundred—or two thousand—library items.
+
+We could give up, because the obvious problem is that display shelving is larger than a monitor, and there’s some element of peripheral vision needed for the real thing. Also, Digital Rights Management prevents innovation because the library isn’t truly yours. And while some interesting developments in Photos will slice your collection by location, recognized faces, and timestamps, that only works where the data is available and accurate. These tools can give you the ability to see all your photos on a globe, reveal insights, and allow a deep dive.
+
+Music really interests me, and I'm leveraging fair use to rip my CDs and LPs. I had the idea of representing my collection of albums as a book-shelf view but on the screen. After literally years of imagining how this might work, I have a prototype and wanted to share a couple of issues. The banner here on LinkedIn is a screen-grab.
+
+First, there’s no digital “album” format. Most software determines albums by reading tags embedded in music track files, matching the album and artist names, putting them in track number order, and calling it done. This depends on impeccable tagging and creates phantom albums from orphaned tracks and albums with missing tracks. The solution I came up with was to create a playlist (m3u) for each album I wanted visible on-the-shelf, ignoring existing tags. I used the unofficial fields #EXTALB and #EXTART for album title (and year) and album artist.
+
+While cover art is abundant and easily downloaded from the web, there is an absence of spine images. For a while, I thought I might display the left edge of the cover, as though it were a badly folded vinyl sleeve, but an awful lot of my albums are white, or have white edges, so that didn’t work. Album spines really are miniature works of art. They often represent a label identity with recognizable hallmarks, color blocks, or catalog numbers. Scanning your own CDs spines requires dismantling the brittle jewel case to remove the tray paper, on repeat.
+
+Making playlists and scanning covers is an unsolved faff. The most contentious issue is what order to sort the albums. I went with what I have on my shelves: grouped by artist, then in release order—which is why I need the year in the title. Most software will put Pet Shop Boys – Behaviour before Please—which is patently wrong. Then there are all Taylor Swift’s versions, which, if you’re curious, I put in new-release order. Read Nick Hornby’s High Fidelity (Fiction, Author A–Z, “Hornby, Nick”) for other ways to sort albums.
