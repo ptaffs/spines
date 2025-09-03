@@ -38,17 +38,7 @@ do
       #this code pulls date as EXTYER:1981 or appended to EXTALB:MyAlbum (1981)
       sYr=$(grep "#EXTYER:" < "${sFileUx}")
       sYr="${sYr#*:}"
-      if [[ "${sAlb: -1}" == ")" ]]
-      then
-        sPYr="${sAlb##*\(}"
-        sPYr="${sPYr%)}"
-        if [[ "${sPYr}" =~ ^[0-9]+([-][0-9]+([-][0-9]+)?)?$ ]]
-        then
-          sAlb="${sAlb%%\(*}"
-          sAlb="${sAlb%% }"
-          sYr="$sPYr"
-        fi
-      fi
+      [[ "${sAlb}" =~ \(([0-9]{4})\)$ ]] && sYr="${BASH_REMATCH[1]}"
     elif [[ "${sFile##*.}" == "cue" ]]
     then
       sArt=$(grep "^PERFORMER " < "${sFileUx}")
