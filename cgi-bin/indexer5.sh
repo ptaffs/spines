@@ -37,8 +37,13 @@ do
       sAlb=${sAlb#*:}
       #this code pulls date as EXTYER:1981 or appended to EXTALB:MyAlbum (1981)
       sYr=$(grep "#EXTYER:" < "${sFileUx}")
-      sYr="${sYr#*:}"
-      [[ "${sAlb}" =~ \(([0-9]{4})\)$ ]] && sYr="${BASH_REMATCH[1]}"
+      sYr=${sYr#*:}
+      # [[ "${sAlb}" =~ \(([0-9]{4})\)$ ]] && sYr="${BASH_REMATCH[1]}"
+      if [[ "${sAlb}" =~ (.*)\(([0-9]{4})\) ]] 
+      then
+        sAlb=${BASH_REMATCH[1]% *}
+        sYr=${BASH_REMATCH[2]}
+       fi
     elif [[ "${sFile##*.}" == "cue" ]]
     then
       sArt=$(grep "^PERFORMER " < "${sFileUx}")
@@ -52,7 +57,7 @@ do
     [[ -z "${sArt}" ]] && echo "Warning: no artist for ${sFile}"
     [[ -z "${sYr}" ]] && { sYr=0000 ; echo "Warning: no year for ${sFile}" ; }
     [[ -z "${sAlb}" ]] && sAlb="${sFile##*/}" 
-    echo "$((++sMax))|${sFile#${sMusic}}|${sFileMod}|${sType}|${sArt}|${sYr}|${sAlb}|" >> "${sDB}.$$"
+    echo "$((++sMax))|${sFile#${sMusic}}|${sFileMod}|${sType}|${sArt}|${sYr:0:4}|${sAlb}|" >> "${sDB}.$$"
   fi
 done
 echo "Finished index update"
