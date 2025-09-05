@@ -31,14 +31,10 @@ do
     sed $'s/\r$//' "${sFile}" > $sFileUx
     if [[ "${sFile##*.}" == "m3u" ]]
     then
-      sArt=$(grep "#EXTART:" < "${sFileUx}")
-      sArt=${sArt#*:}
-      sAlb=$(grep "#EXTALB:" < "${sFileUx}")
-      sAlb=${sAlb#*:}
+      sArt=$(awk -F: -v key="#EXTART" '$1==key {print $2}' "${sFileUx}")
+      sAlb=$(awk -F: -v key="#EXTALB" '$1==key {print $2}' "${sFileUx}")
       #this code pulls date as EXTYER:1981 or appended to EXTALB:MyAlbum (1981)
-      sYr=$(grep "#EXTYER:" < "${sFileUx}")
-      sYr=${sYr#*:}
-      # [[ "${sAlb}" =~ \(([0-9]{4})\)$ ]] && sYr="${BASH_REMATCH[1]}"
+      sYr=$(awk -F: -v key="#EXTYER" '$1==key {print $2}' "${sFileUx}")
       if [[ "${sAlb}" =~ (.*)\(([0-9]{4})\) ]] 
       then
         sAlb=${BASH_REMATCH[1]% *}
